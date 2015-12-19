@@ -4,7 +4,7 @@ require_relative 'countable'
 class RParticle
   include Identifiable
 
-  attr_accessor :pos, :mass, :radius, :vel
+  attr_accessor :pos, :mass, :radius, :vel, :last_dragged_pos
   attr_reader :color, :forces, :edges
 
   def initialize window, x, y, vx, vy,
@@ -25,6 +25,8 @@ class RParticle
     @radius = radius
     @fixed = fixed
     @locked = false
+    @dragged = false
+    @last_dragged_pos = Vector[0.0, 0.0]
 
     @image = TexPlay.create_blank_image(window, 2 * @radius, 2 * @radius)
     @image.circle @radius, @radius, @radius, :fill => true, :color => @color,
@@ -48,6 +50,17 @@ class RParticle
 
   def lock
     @locked = !@locked
+  end
+
+  def drag v=true
+    @dragged = v
+    if v
+      @last_dragged_pos = @pos
+    end
+  end
+
+  def dragged?
+    @dragged
   end
 
   def selected?

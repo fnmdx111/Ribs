@@ -54,15 +54,12 @@ class RScene
     g.div_elem_wise @particles.collect_concat {|x| [x.mass, x.mass]}
     @particles.each_with_index do |par, i|
       if par.locked?
+      elsif par.dragged?
       else
         par.pos += par.vel * dt
         par.vel += g.get2(i) * dt
       end
     end
-  end
-
-  def linearized_implicit_euler_update dt
-
   end
 
   def symplectic_euler_update dt
@@ -75,6 +72,7 @@ class RScene
     g.div_elem_wise @particles.collect_concat {|p| [p.mass, p.mass]}
     @particles.each_with_index do |p, i|
       if p.locked?
+      elsif p.dragged?
       else
         p.vel += dt * g.get2(i)
         p.pos += dt * p.vel

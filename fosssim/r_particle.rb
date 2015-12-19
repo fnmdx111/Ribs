@@ -63,6 +63,10 @@ class RParticle
     @dragged
   end
 
+  def god?
+    fixed? or locked? or dragged?
+  end
+
   def selected?
     (@window.mouse - @pos).norm <= @radius
   end

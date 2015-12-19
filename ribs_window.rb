@@ -101,6 +101,9 @@ class RibsWindow < Gosu::Window
 
         unselect_current_particle
 
+      when Gosu::KbC
+        @scene.detect_collision!
+
       when Gosu::KbSpace
         @simulate = !@simulate
 

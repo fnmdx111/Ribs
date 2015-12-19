@@ -1,10 +1,15 @@
 require 'matrix'
+require_relative 'collision/r_collision'
 
 class RScene
-  attr_accessor :size, :particles, :integrator, :forces
-  attr_reader :energy, :gradient, :hessian_v, :hessian_x, :window
+  attr_accessor :size, :integrator
+  attr_reader :energy, :gradient, :hessian_v, :hessian_x, :window, :edges,
+              :particles, :forces, :collision_method
 
   VEC2ZERO = Vector[0, 0]
+  COLLISION_ORDER = {:penalty => :impulse,
+                     :impulse => :no,
+                     :no => :penalty}
 
   def initialize window, integrator= :symplectic, particles=[]
     @window = window
@@ -16,6 +21,16 @@ class RScene
 
     @energy = 0.0
     @hessian = Matrix.zero (particles.size * 2)
+
+    @penalty = RPenaltyForce.new self, 0.01, 100
+    @impulse_handler = RSimpleHandler.new self, 0.75
+    @collision_method = :penalty
+  end
+
+  def detect_collision! method= :unspecified
+    @collision_method = method == :unspecified ?
+        RScene::COLLISION_ORDER[@collision_method] :
+        method
   end
 
   def append_force force
@@ -59,6 +74,9 @@ class RScene
   def accumulate_gradient
     g = Matrix.zero(1, 2 * @particles.size).row 0
     @forces.each {|f| f.gradient g}
+
+    @penalty.gradient g if @collision_method == :penalty
+
     -1.0 * g
   end
 
@@ -102,12 +120,26 @@ class RScene
   end
 
   def update dt
-    if @integrator == :explicit
-      explicit_euler_update dt
-    elsif @integrator == :implicit
-      linearized_implicit_euler_update dt
-    elsif @integrator == :symplectic
-      symplectic_euler_update dt
+    case @integrator
+      when :explicit
+        explicit_euler_update dt
+      when :symplectic
+        symplectic_euler_update dt
+      else
+    end
+
+    if @collision_method == :impulse
+      @particles.combination 2 do |ps|
+        n = RCollisionDetector::par_par *ps
+        @impulse_handler.par_par *ps, n unless n.nil?
+      end
+
+      @particles.each do |p|
+        @edges.each do |e|
+          n = RCollisionDetector::par_edge p, e
+          @impulse_handler.par_edge p, e, n unless n.nil?
+        end
+      end
     end
   end
 end

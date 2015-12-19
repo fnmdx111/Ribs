@@ -9,6 +9,8 @@ module ActionNewSpringForce
   end
 
   def start_new_spring_force
+    clear_mouse
+
     @stage = 0
     @ansf_end_points = []
   end

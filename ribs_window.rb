@@ -141,9 +141,9 @@ class RibsWindow < Gosu::Window
   def draw
     draw_bkg_rect
 
-    # draw_action
+    draw_action
     @scene.particles.each &:draw
-    # @scene.forces.each &:draw
-
+    @scene.forces.each &:draw
+    @scene.edges.each &:draw
   end
 end

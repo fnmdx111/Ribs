@@ -8,6 +8,8 @@ module ActionNewSimpleGravity
   end
 
   def start_new_simple_gravity_force
+    clear_mouse
+
     @stage = 0
   end
 

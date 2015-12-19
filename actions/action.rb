@@ -6,6 +6,7 @@ module Action
 
     @draw_point1 = nil
     @draw_point2 = nil
+    @draw_action = TexPlay.create_blank_image self, width, height
   end
 
   def setup_key key, start_method, update_method, end_method
@@ -26,6 +27,8 @@ module Action
 
     self.send @keys[id][0] if @keys.include? id
     @activated_key = id
+
+    @draw_color = [rand, rand, rand]
   end
 
   def update_action
@@ -35,15 +38,11 @@ module Action
   def draw_action
     return if @draw_point1.nil? or @draw_point2.nil?
 
-    width = (@draw_point1.px - @draw_point2.px).abs
-    height = (@draw_point1.py - @draw_point2.py).abs
-
-    return if width.to_i == 0 or height.to_i == 0
-
-    TexPlay.create_blank_image(self, width, height)
+    @draw_action.clear
+    @draw_action
         .line(@draw_point1.px, @draw_point1.py,
               @draw_point2.px, @draw_point2.py,
-              :color => :random, :thickness => 10)
-        .draw(@draw_point1.px, @draw_point1.py, ZOrder::PARTICLES)
+              :color => @draw_color)
+        .draw(0, 0, ZOrder::LINES)
   end
 end

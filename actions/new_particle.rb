@@ -4,12 +4,14 @@ module ActionNewParticle
   def initialize *args
     super
 
-    @vel_coeff = 0.5
+    @vel_coeff = 1
     setup_key Gosu::KbP, :start_new_particle, :update_new_particle,
               :end_new_particle
   end
 
   def start_new_particle
+    clear_mouse
+
     @stage = 0
     @temp_par = RParticle.new self, 0.0, 0.0, 0.0, 0.0
   end

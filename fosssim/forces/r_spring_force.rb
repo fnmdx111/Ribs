@@ -17,6 +17,9 @@ class RSpringForce < RForce
     @par_y.forces.push self
 
     @scene = scene
+
+    @spring = TexPlay.create_blank_image scene.window, *scene.size
+    @spring_color = [rand, rand, rand]
   end
 
   def energy
@@ -83,13 +86,9 @@ class RSpringForce < RForce
   end
 
   def draw
-    width = (@par_x.pos.px - @par_y.pos.px).abs
-    height = (@par_x.pos.py - @par_y.pos.py).abs
-    return if width == 0 or height == 0
-
-    img = TexPlay.create_blank_image @scene.window, width, height
-    img.line @par_x.pos.px, @par_x.pos.py, @par_y.pos.px, @par_y.pos.py,
-             :color => :black
-    img.draw @par_x.pos.px, @par_x.pos.py, ZOrder::PARTICLES
+    @spring.clear
+    @spring.line @par_x.pos.px, @par_x.pos.py, @par_y.pos.px, @par_y.pos.py,
+             :color => @spring_color
+    @spring.draw 0, 0, ZOrder::LINES
   end
 end

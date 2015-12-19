@@ -36,7 +36,7 @@ module ActionNewSpringForce
 
       @ansf_end_points.push par
 
-      the_force = RSpringForce.new @scene, @ansf_end_points.collect {|p| p.id},
+      the_force = RSpringForce.new @scene, @ansf_end_points.collect(&:id),
                                    (@ansf_end_points[0].pos
                                    - @ansf_end_points[1].pos).norm
       @scene.append_force the_force

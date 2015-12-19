@@ -7,6 +7,10 @@ class Numeric
   def sqrt
     Math.sqrt self
   end
+
+  def clamp min=0.0, max=1.0
+    [[self, min].max, max].min
+  end
 end
 
 class Float

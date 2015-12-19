@@ -17,6 +17,8 @@ Supported Interactions
 + **Q**: quit Ribs
 + **F**: fix the selected particle (remove any forces applied to it), the velocity remains the same
 + **L**: lock the selected particle, same as fix, except that the velocity of the particle is set to 0 as well
++ **C**: circularly change collision detection and handling to Penalty, SimpleImpulse, and NoCollision
++ **E**: add a new edge between the two selected particles
 + AND MORE WILL BE ADDED!
 
 Dependencies

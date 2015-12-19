@@ -26,9 +26,30 @@ class RScene
     @particles.push par
   end
 
+  def append_edge edge
+    @edges.push edge
+  end
+
   def remove_particle par
-    par.forces.each {|f| @forces.reject! {|x| x.id == f.id}}
-    par.edges.each {|e| @edges.reject! {|x| x.id == e.id}}
+    par.forces.each do |f|
+      @forces.reject! {|x| x.id == f.id}
+
+      @particles.each do |p|
+        next if p.id == par.id
+        # remove force instances that reside in other particles' forces field
+        # to avoid memory leaking
+        p.forces.reject! {|x| x.id == f.id}
+      end
+    end
+
+    par.edges.each do |e|
+      @edges.reject! {|x| x.id == e.id}
+
+      @particles.each do |p|
+        next if p.id == par.id
+        p.edges.reject! {|x| x.id == e.id}
+      end
+    end
 
     idx = @particles.index {|p| p.id == par.id}
 

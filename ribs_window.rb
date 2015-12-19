@@ -17,6 +17,7 @@ require_relative 'actions/new_particle'
 require_relative 'actions/new_spring_force'
 require_relative 'actions/drag_particle'
 require_relative 'actions/new_simple_gravity'
+require_relative 'actions/new_edge'
 
 class RibsWindow < Gosu::Window
   attr_accessor :mouse
@@ -26,6 +27,7 @@ class RibsWindow < Gosu::Window
   include ActionNewSpringForce
   include ActionDragParticle
   include ActionNewSimpleGravity
+  include ActionNewEdge
 
   def initialize width, height, full_window
     super

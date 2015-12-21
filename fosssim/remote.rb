@@ -1,4 +1,4 @@
-require 'nanomsg'
+if require 'nanomsg'
 require 'logger'
 
 class RemoteController
@@ -196,4 +196,5 @@ class RemoteController
       end
     end
   end
+end
 end

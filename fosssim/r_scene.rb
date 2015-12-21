@@ -69,6 +69,20 @@ class RScene
     idx = @particles.index {|p| p.id == par.id}
 
     @particles.delete_at idx
+
+    @particles.each_with_index do |p, i|
+      p.forces.each do |f|
+        case f
+          when RSpringForce
+            if f.par_x.id == p.id
+              f.reindex_start i
+            elsif f.par_y.id == p.id
+              f.reindex_end i
+            end
+          else
+        end
+      end
+    end
   end
 
   def remove_force force

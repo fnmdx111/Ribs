@@ -3,6 +3,21 @@ Ribs (or Ribs2D)
 
 A 2D Ruby Interactive sand-Box Simulator. This is project is intended as the final project of W4167 Computer Animation.
 
+How to Install
+----
+
+* Make sure you have Ruby 2.2.3+
+* Install `libsdl2` (via brew for example)
+* `gem install gosu`
+* `gem install texplay -v 0.4.4.pre`
+
+If you want to use the console
+
+* Install `nanomsg` (via brew for example)
+* `gem install nanomsg`
+* The console and Ribs communicate through TCP sockets at 21556, make sure this port is open
+
+
 Supported Interactions
 ----
 
@@ -63,6 +78,11 @@ Screenshot
 ----
 
 ![screenshot](sshot.png)
+
+Author
+----
+
+Zihang Chen (zc2324)
 
 License
 ----

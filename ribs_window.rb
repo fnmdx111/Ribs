@@ -145,7 +145,7 @@ class RibsWindow < Gosu::Window
 
     @scene.update 1.0 / 60 if @simulate
 
-    self.caption = "Ribs, time elapsed: #{Gosu.milliseconds / 1000.0}"
+    self.caption = "Ribs, time elapsed: #{'%.3f' % (Gosu.milliseconds / 1000.0)}"
   end
 
   def draw

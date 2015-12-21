@@ -1,7 +1,8 @@
 require_relative 'r_force'
 
 class RSpringForce < RForce
-  attr_accessor :start, :end, :l0, :param_k, :param_b, :spring_color
+  attr_accessor :start, :end, :l0, :param_k, :param_b, :spring_color, :par_x,
+                :par_y
 
   def hash_dump
     {:id => @id, :start => @end_points[0], :end => @end_points[1],
@@ -39,6 +40,14 @@ class RSpringForce < RForce
     @start = @scene.particles.index {|p| p.id == v}
     @par_x = @scene.particles[@start]
     @par_x.forces.push self
+  end
+
+  def reindex_start idx
+    @start = idx
+  end
+
+  def reindex_end idx
+    @end = idx
   end
 
   def end= v

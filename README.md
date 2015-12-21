@@ -15,8 +15,15 @@ If you want to use the console
 
 * Install `nanomsg` (via brew for example)
 * `gem install nanomsg`
-* The console and Ribs communicate through TCP sockets at 21556, make sure this port is open
+* The console and Ribs communicate through TCP sockets at 21556, so make sure this port is available, you can of course alter it to fit your environment in `client.rb` and `fosssim/remote.rb`
 
+How to Run
+----
+
+* `ruby ribs.rb` to start a Ribs window
+* `ruby client.rb` to open the console
+* Keep this manual at hand
+* Fasten your seatbelt!
 
 Supported Interactions
 ----

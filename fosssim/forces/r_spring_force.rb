@@ -1,9 +1,18 @@
 require_relative 'r_force'
 
 class RSpringForce < RForce
+  attr_accessor :start, :end, :l0, :param_k, :param_b, :spring_color
+
+  def hash_dump
+    {:id => @id, :start => @end_points[0], :end => @end_points[1],
+     :l0 => @l0, :k => @param_k, :b => @param_b,
+     :spring_color => @spring_color}
+  end
+
   def initialize scene, end_points, l0, k=10, b=0
     super scene, true
 
+    @end_points = end_points
     @l0 = l0
     @param_k = k
     @param_b = b
@@ -22,10 +31,24 @@ class RSpringForce < RForce
     @spring_color = [rand, rand, rand]
   end
 
-  def energy
-    l = (@par_x.pos - @par_y.pos).norm
+  def start= v
+    unless @start.nil?
+      @par_x.forces.delete {|x| x.id == @id}
+    end
 
-    0.5 * @param_k * (l - @l0).square
+    @start = @scene.particles.index {|p| p.id == v}
+    @par_x = @scene.particles[@start]
+    @par_x.forces.push self
+  end
+
+  def end= v
+    unless @end.nil?
+      @par_y.forces.delete {|x| x.id == @id}
+    end
+
+    @end = @scene.particles.index {|p| p.id == v}
+    @par_y = @scene.particles[@end]
+    @par_y.forces.push self
   end
 
   def gradient vec_g
@@ -41,48 +64,6 @@ class RSpringForce < RForce
     fdamp *= @param_b * fdamp.dot(@par_y.vel - @par_x.vel)
     vec_g.inc2 @start, -fdamp
     vec_g.inc2 @end, fdamp
-  end
-
-  def hessian_x mat_h
-    n_hat = @par_y.pos - @par_x.pos
-    l = n_hat.norm
-    n_hat /= l
-
-    hess = n_hat.square
-    hess += (l - @l0) * (Matrix.I(2) - hess) / l
-    hess *= @param_k
-
-    mat_h.inc22 @start, @start, hess
-    mat_h.inc22 @end, @end, hess
-    mat_h.inc22 @start, @end, -hess
-    mat_h.inc22 @end, @start, -hess
-
-    dv = @par_y.vel - @par_x.vel
-    hess = dv.covector.transpose * n_hat.covector
-
-    t = n_hat.dot dv
-    hess.row_size.times do |x|
-      hess[x, x] += t
-    end
-    hess -= hess * n_hat.square
-    hess *= -@param_b / l
-
-    mat_h.inc22 @start, @start, -hess
-    mat_h.inc22 @end, @end, -hess
-    mat_h.inc22 @start, @end, hess
-    mat_h.inc22 @end, @start, hess
-  end
-
-  def hessian_v mat_h
-    n_hat = @par_y.pos - @par_x.pos
-    l = n_hat.norm
-    n_hat /= l
-
-    hess = @param_b * n_hat.square
-    mat_h.inc22 @start, @start, hess
-    mat_h.inc22 @end, @end, hess
-    mat_h.inc22 @start, @end -= hess
-    mat_h.inc22 @end, @start -= hess
   end
 
   def draw

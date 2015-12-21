@@ -1,10 +1,15 @@
 require_relative '../forces/r_force'
 
 class RPenaltyForce < RForce
+  attr_accessor :thickness, :param_k
   def initialize scene, thickness, k
     @scene = scene
     @thickness = thickness
     @param_k = k
+  end
+
+  def hash_dump
+    {:thickness => @thickness, :k => @param_k}
   end
 
   def gradient g

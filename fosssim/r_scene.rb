@@ -3,7 +3,7 @@ require_relative 'collision/r_collision'
 
 class RScene
   attr_accessor :size, :integrator
-  attr_reader :energy, :gradient, :hessian_v, :hessian_x, :window, :edges,
+  attr_reader :energy, :gradient, :window, :edges, :penalty, :impulse_handler,
               :particles, :forces, :collision_method
 
   VEC2ZERO = Vector[0, 0]
@@ -22,7 +22,7 @@ class RScene
     @energy = 0.0
     @hessian = Matrix.zero (particles.size * 2)
 
-    @penalty = RPenaltyForce.new self, 0.01, 100
+    @penalty = RPenaltyForce.new self, 0.0001, 1000
     @impulse_handler = RSimpleHandler.new self, 0.75
     @collision_method = :penalty
   end
@@ -69,6 +69,20 @@ class RScene
     idx = @particles.index {|p| p.id == par.id}
 
     @particles.delete_at idx
+  end
+
+  def remove_force force
+    @particles.each do |p|
+      p.forces.reject! {|f| f.id == force.id}
+    end
+    @forces.reject! {|f| f.id == force.id}
+  end
+
+  def remove_edge edge
+    @particles.each do |p|
+      p.edges.reject! {|e| e.id == edge.id}
+    end
+    @edges.reject! {|e| e.id == edge.id}
   end
 
   def accumulate_gradient

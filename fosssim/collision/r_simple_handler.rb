@@ -1,4 +1,10 @@
 class RSimpleHandler
+  attr_accessor :cor
+
+  def hash_dump
+    {:cor => @cor}
+  end
+
   def initialize scene, cor
     @scene = scene
     @cor = cor

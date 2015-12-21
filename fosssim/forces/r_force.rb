@@ -3,15 +3,18 @@ require_relative '../z_order'
 
 class RForce
   attr_reader :scene
-  attr_accessor :enabled
+  attr_accessor :enabled, :counter, :id
 
-  include Identifiable
+  @counter = 0
 
   def initialize scene, enabled
+    @@counter ||= 0
     super()
 
     @scene = scene
     @enabled = enabled
+    @@counter += 1
+    @id = @@counter
   end
 
   def energy; end
@@ -23,4 +26,6 @@ class RForce
   def hessian_v mat_h; end
 
   def draw; end
+
+  def hash_dump; end
 end

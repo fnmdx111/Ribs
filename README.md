@@ -21,6 +21,38 @@ Supported Interactions
 + **E**: add a new edge between the two selected particles
 + AND MORE WILL BE ADDED!
 
+Console Interactions
+----
+
+Run `client.rb` to interact with Ribs in a console (via NanoMsg)! Supported commands are:
+
++ **coll penalty k**: set penalty k value
++ **coll penalty thickness**: set penalty thickness value
++ **coll simple cor**: set simple handler COR value
++ **q!**: quit the console
++ **quit**: quit both the console and Ribs
++ **simp grav new**: new simple gravity force
++ **simp grav gravity=**: set gravity force gravity value
++ **spring new**: new spring force
++ **spring k=**: set spring force k value
++ **spring b=**: set spring force b value
++ **spring start=|end=**: set spring force start particle or end particle
++ **spring l0=**: set spring force l0 value
++ **spring spring color=**: set spring force spring color
++ **force remove**: safely remove a force
++ **edge new**: new edge
++ **edge start=|end=**: set edge start particle or end particle
++ **edge color=**: set edge color
++ **edge radius=**: set edge radius
++ **par new**: new particle
++ **par remove**: safely remove a particle
++ **par pos=|vel=|mass=|radius=|color=|fix|lock**: set various particle features
++ **list forces|par|edges**: list forces, particles, or edges
++ **show penalty|simple_coll**: show penalty force information or simple impulse handler information
++ **coll change**: change collision handler type
++ **pause**: pause or continue simulation
+
+
 Dependencies
 ----
 

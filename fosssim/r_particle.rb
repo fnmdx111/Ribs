@@ -4,11 +4,18 @@ require_relative 'countable'
 class RParticle
   include Identifiable
 
-  attr_accessor :pos, :mass, :radius, :vel, :last_dragged_pos
-  attr_reader :color, :forces, :edges
+  attr_accessor :pos, :mass, :radius, :vel, :last_dragged_pos, :color
+  attr_reader :forces, :edges
+
+  def hash_dump
+    {:id => @id, :pos => @pos, :mass => @mass, :radius => @radius,
+     :vel => @vel, :color => @color,
+     :forces => @forces.collect {|f| f.hash_dump},
+     :edges => @edges.collect {|e| e.hash_dump}}
+  end
 
   def initialize window, x, y, vx, vy,
-                 fixed=false, m=1, clr=:random, radius=15
+                 fixed=false, locked=false, m=1, clr=:random, radius=15
     super()
 
     @window = window

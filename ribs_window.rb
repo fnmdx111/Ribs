@@ -19,8 +19,11 @@ require_relative 'actions/drag_particle'
 require_relative 'actions/new_simple_gravity'
 require_relative 'actions/new_edge'
 
+require_relative 'fosssim/remote'
+
 class RibsWindow < Gosu::Window
-  attr_accessor :mouse
+  attr_accessor :mouse, :simulate
+  attr_reader :scene
 
   include Action
   include ActionNewParticle
@@ -40,6 +43,8 @@ class RibsWindow < Gosu::Window
     @mouse = Vector[-1.0, -1.0]
     @dummy_particle = RParticle.new self, 0.0, 0.0, 0.0, 0.0
     @selected_particle = @dummy_particle
+
+    @remote = RemoteController.new self
 
     test_scene
   end

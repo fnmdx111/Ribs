@@ -18,4 +18,8 @@ class RSimpleGravityForce < RForce
       vec_g.inc2 idx, (-x.mass * @gravity)
     end
   end
+
+  def hash_dump
+    {:id => @id, :gravity => @gravity}
+  end
 end
